@@ -23,6 +23,29 @@
 <main>
 	<div class="card">
 		<BPMDisplay />
+		<div class="note-value-control">
+			<span class="label">Note Value</span>
+			<div class="segmented" role="radiogroup" aria-label="Note value per step">
+				<button
+					class:active={metronome.noteValue === 'quarter'}
+					onclick={() => metronome.setNoteValue('quarter')}
+					role="radio"
+					aria-checked={metronome.noteValue === 'quarter'}
+				>¼</button>
+				<button
+					class:active={metronome.noteValue === 'eighth'}
+					onclick={() => metronome.setNoteValue('eighth')}
+					role="radio"
+					aria-checked={metronome.noteValue === 'eighth'}
+				>⅛</button>
+				<button
+					class:active={metronome.noteValue === 'sixteenth'}
+					onclick={() => metronome.setNoteValue('sixteenth')}
+					role="radio"
+					aria-checked={metronome.noteValue === 'sixteenth'}
+				>1/16</button>
+			</div>
+		</div>
 		<div class="tap-container">
 			<TapButton />
 		</div>
@@ -114,6 +137,19 @@
 	}
 
 	.hihat-control .label {
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		color: var(--muted);
+		text-transform: uppercase;
+	}
+
+	.note-value-control {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+	}
+
+	.note-value-control .label {
 		font-size: 0.8rem;
 		letter-spacing: 0.05em;
 		color: var(--muted);

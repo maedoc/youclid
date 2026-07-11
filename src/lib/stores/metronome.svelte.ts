@@ -1,8 +1,9 @@
 import { browser } from '$app/environment';
-import { AudioEngine } from '../audio/AudioEngine';
+import { AudioEngine, type NoteValue } from '../audio/AudioEngine';
 import { presets, findPreset } from '../rhythm/presets';
 
 export type HiHatVariant = 'closed' | 'open';
+export type { NoteValue };
 
 class MetronomeState {
 	bpm = $state(120);
@@ -10,6 +11,7 @@ class MetronomeState {
 	pulses = $state(3);
 	rotation = $state(0);
 	hiHatVariant = $state<HiHatVariant>('closed');
+	noteValue = $state<NoteValue>('eighth');
 	isPlaying = $state(false);
 	currentStep = $state(0);
 	currentPresetName = $state('Son Clave');
@@ -25,7 +27,8 @@ class MetronomeState {
 			steps: this.steps,
 			pulses: this.pulses,
 			rotation: this.rotation,
-			hiHatVariant: this.hiHatVariant
+			hiHatVariant: this.hiHatVariant,
+			noteValue: this.noteValue
 		});
 		this.engine.setOnBeat((beat) => {
 			this.currentStep = beat % this.steps;
@@ -55,7 +58,8 @@ class MetronomeState {
 				steps: this.steps,
 				pulses: this.pulses,
 				rotation: this.rotation,
-				hiHatVariant: this.hiHatVariant
+				hiHatVariant: this.hiHatVariant,
+				noteValue: this.noteValue
 			});
 			this.engine.start();
 			this.isPlaying = true;
@@ -97,6 +101,11 @@ class MetronomeState {
 		this.engine.setParams({ hiHatVariant: variant });
 	}
 
+	setNoteValue(value: NoteValue) {
+		this.noteValue = value;
+		this.engine.setParams({ noteValue: value });
+	}
+
 	applyPreset(presetName: string) {
 		const preset = presets.find((p) => p.name === presetName);
 		if (!preset) return;
@@ -119,12 +128,14 @@ class MetronomeState {
 		this.pulses = 3;
 		this.rotation = 0;
 		this.hiHatVariant = 'closed';
+		this.noteValue = 'eighth';
 		this.engine.setParams({
 			bpm: this.bpm,
 			steps: this.steps,
 			pulses: this.pulses,
 			rotation: this.rotation,
-			hiHatVariant: this.hiHatVariant
+			hiHatVariant: this.hiHatVariant,
+			noteValue: this.noteValue
 		});
 		this.updatePresetName();
 	}

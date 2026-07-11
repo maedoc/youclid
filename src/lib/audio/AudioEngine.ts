@@ -10,6 +10,14 @@ import { euclideanPattern } from '../rhythm/euclidean';
 const LOOKAHEAD_MS = 25; // setInterval interval
 const SCHEDULE_AHEAD_S = 0.1; // schedule 100ms ahead
 
+export type NoteValue = 'quarter' | 'eighth' | 'sixteenth';
+
+const NOTE_DIVISION: Record<NoteValue, number> = {
+	quarter: 1,
+	eighth: 2,
+	sixteenth: 4
+};
+
 export class AudioEngine {
 	private ctx: AudioContext | null = null;
 	private buffers: AudioBuffers | null = null;
@@ -24,6 +32,7 @@ export class AudioEngine {
 	private pulses = 3;
 	private rotation = 0;
 	private hiHatVariant: 'closed' | 'open' = 'closed';
+	private noteValue: NoteValue = 'eighth';
 	private pattern: boolean[] = [];
 
 	private onBeatCallback: ((beat: number) => void) | null = null;
@@ -56,6 +65,7 @@ export class AudioEngine {
 		pulses?: number;
 		rotation?: number;
 		hiHatVariant?: 'closed' | 'open';
+		noteValue?: NoteValue;
 	}): void {
 		if (params.bpm !== undefined) this.bpm = params.bpm;
 		if (params.steps !== undefined) this.steps = params.steps;
@@ -63,6 +73,7 @@ export class AudioEngine {
 		if (params.rotation !== undefined) this.rotation = params.rotation;
 		if (params.hiHatVariant !== undefined)
 			this.hiHatVariant = params.hiHatVariant;
+		if (params.noteValue !== undefined) this.noteValue = params.noteValue;
 		this.regeneratePattern();
 	}
 
@@ -99,7 +110,7 @@ export class AudioEngine {
 	private scheduler(): void {
 		if (!this.ctx || !this.buffers || !this.gainNode) return;
 
-		const secondsPerBeat = 60.0 / this.bpm;
+		const secondsPerBeat = 60.0 / this.bpm / NOTE_DIVISION[this.noteValue];
 
 		while (this.nextNoteTime < this.ctx.currentTime + SCHEDULE_AHEAD_S) {
 			const beatInPattern = this.currentBeat % this.steps;

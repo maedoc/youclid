@@ -35,6 +35,7 @@ Target Platform: HTML5 + SvelteKit (adapter-static, SPA mode) + Web Audio API + 
 - Uses the last 4–8 taps; drops outliers (intervals < 200 ms or > 3 s).
 - The BPM is updated continuously as taps arrive. Visual feedback (CSS flash) on each tap.
 - BPM can also be adjusted with a range slider or +/- buttons (range 20–300 BPM).
+- Note value: the user selects what BPM refers to — quarter, eighth, or sixteenth note. Each pattern step corresponds to the selected note value. This scales the actual playback speed: at 120 BPM, quarter = 0.5s/step, eighth = 0.25s/step, sixteenth = 0.125s/step. Default is eighth note (appropriate for clave patterns).
 
 2.4 Preset Rhythm Library
 
