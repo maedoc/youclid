@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { presets, findPreset } from './presets';
 
 describe('presets', () => {
-	it('includes all 6 presets', () => {
-		expect(presets).toHaveLength(6);
+	it('includes at least 20 presets', () => {
+		expect(presets.length).toBeGreaterThanOrEqual(20);
 	});
 
 	it('has unique names', () => {
@@ -11,14 +11,14 @@ describe('presets', () => {
 		expect(new Set(names).size).toBe(names.length);
 	});
 
-	it('Son Clave is (3,8,0)', () => {
+	it('Tresillo is (3,8,0)', () => {
 		const p = findPreset(8, 3, 0);
-		expect(p?.name).toBe('Son Clave');
+		expect(p?.name).toBe('Tresillo');
 	});
 
-	it('Rumba Clave is (3,8,4)', () => {
-		const p = findPreset(8, 3, 4);
-		expect(p?.name).toBe('Rumba Clave');
+	it('Cinquillo is (5,8,0)', () => {
+		const p = findPreset(8, 5, 0);
+		expect(p?.name).toBe('Cinquillo');
 	});
 
 	it('Bossa Nova is (5,16,0)', () => {
@@ -26,15 +26,24 @@ describe('presets', () => {
 		expect(p?.name).toBe('Bossa Nova');
 	});
 
-	it('Afrobeat 7/16 is (7,16,0)', () => {
-		const p = findPreset(16, 7, 0);
-		expect(p?.name).toBe('Afrobeat 7/16');
+	it('Son Clave 3-2 is (5,16,6)', () => {
+		const p = findPreset(16, 5, 6);
+		expect(p?.name).toBe('Son Clave 3-2');
 	});
 
-	it('Tresillo is (3,8,0) — same params as Son Clave but different rotation', () => {
-		// Son Clave and Tresillo both have (3,8,0), so Son Clave is found first
-		const p = findPreset(8, 3, 0);
-		expect(p?.name).toBe('Son Clave');
+	it('Take Five is (2,5,2)', () => {
+		const p = findPreset(5, 2, 2);
+		expect(p?.name).toBe('Take Five');
+	});
+
+	it('Gahu Bell is (7,12,0)', () => {
+		const p = findPreset(12, 7, 0);
+		expect(p?.name).toBe('Gahu Bell');
+	});
+
+	it('Aksak is (4,9,0)', () => {
+		const p = findPreset(9, 4, 0);
+		expect(p?.name).toBe('Aksak');
 	});
 
 	it('4-on-the-floor is (4,4,0)', () => {
@@ -43,7 +52,7 @@ describe('presets', () => {
 	});
 
 	it('returns null for non-matching params', () => {
-		expect(findPreset(7, 3, 0)).toBeNull();
+		expect(findPreset(13, 5, 0)).toBeNull();
 	});
 
 	it('all presets have valid parameters', () => {
