@@ -69,7 +69,7 @@ class MetronomeState {
 	}
 
 	setSteps(value: number) {
-		this.steps = Math.max(2, Math.min(16, Math.round(value)));
+		this.steps = Math.max(2, Math.min(64, Math.round(value)));
 		if (this.pulses > this.steps) this.pulses = this.steps;
 		if (this.rotation >= this.steps) this.rotation = this.steps - 1;
 		this.engine.setParams({

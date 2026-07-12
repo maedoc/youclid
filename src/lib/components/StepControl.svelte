@@ -10,6 +10,26 @@
 	}
 
 	let { label, value, min, max, onChange }: Props = $props();
+
+	function handleInput(e: Event) {
+		const target = e.currentTarget as HTMLInputElement;
+		const parsed = parseInt(target.value);
+		if (!isNaN(parsed)) {
+			onChange(parsed);
+		}
+	}
+
+	function handleBlur(e: Event) {
+		const target = e.currentTarget as HTMLInputElement;
+		const parsed = parseInt(target.value);
+		if (isNaN(parsed) || parsed < min) {
+			target.value = String(min);
+			onChange(min);
+		} else if (parsed > max) {
+			target.value = String(max);
+			onChange(max);
+		}
+	}
 </script>
 
 <div class="step-control">
@@ -20,22 +40,23 @@
 			disabled={value <= min}
 			aria-label="Decrease {label}"
 		>◀</button>
-		<span class="value" aria-live="polite">{value}</span>
+		<input
+			id={label}
+			class="value-input"
+			type="number"
+			{min}
+			{max}
+			value={value}
+			oninput={handleInput}
+			onblur={handleBlur}
+			aria-label={label}
+		/>
 		<button
 			onclick={() => onChange(Math.min(max, value + 1))}
 			disabled={value >= max}
 			aria-label="Increase {label}"
 		>▶</button>
 	</div>
-	<input
-		id={label}
-		type="range"
-		{min}
-		{max}
-		{value}
-		oninput={(e) => onChange(parseInt(e.currentTarget.value))}
-		aria-label={label}
-	/>
 </div>
 
 <style>
@@ -73,6 +94,7 @@
 		transition: background 0.1s ease;
 		-webkit-tap-highlight-color: transparent;
 		touch-action: manipulation;
+		flex-shrink: 0;
 	}
 
 	.control-row button:hover:not(:disabled) {
@@ -84,18 +106,30 @@
 		cursor: default;
 	}
 
-	.value {
+	.value-input {
 		flex: 1;
+		width: 100%;
 		text-align: center;
 		font-size: 1.25rem;
 		font-weight: 600;
 		font-variant-numeric: tabular-nums;
 		color: var(--fg);
+		background: var(--bg);
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		padding: 0.25rem 0.5rem;
+		-moz-appearance: textfield;
+		appearance: textfield;
 	}
 
-	input[type='range'] {
-		width: 100%;
-		accent-color: var(--accent);
-		height: 1.5rem;
+	.value-input::-webkit-outer-spin-button,
+	.value-input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	.value-input:focus {
+		outline: none;
+		border-color: var(--accent);
 	}
 </style>

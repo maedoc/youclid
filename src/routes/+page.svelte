@@ -56,7 +56,7 @@
 				label="Steps"
 				value={metronome.steps}
 				min={2}
-				max={16}
+				max={64}
 				onChange={(v) => metronome.setSteps(v)}
 			/>
 			<StepControl
