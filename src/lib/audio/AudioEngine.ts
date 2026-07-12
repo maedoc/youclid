@@ -31,7 +31,6 @@ export class AudioEngine {
 	private steps = 8;
 	private pulses = 3;
 	private rotation = 0;
-	private hiHatVariant: 'closed' | 'open' = 'closed';
 	private noteValue: NoteValue = 'eighth';
 	private pattern: boolean[] = [];
 
@@ -64,15 +63,12 @@ export class AudioEngine {
 		steps?: number;
 		pulses?: number;
 		rotation?: number;
-		hiHatVariant?: 'closed' | 'open';
 		noteValue?: NoteValue;
 	}): void {
 		if (params.bpm !== undefined) this.bpm = params.bpm;
 		if (params.steps !== undefined) this.steps = params.steps;
 		if (params.pulses !== undefined) this.pulses = params.pulses;
 		if (params.rotation !== undefined) this.rotation = params.rotation;
-		if (params.hiHatVariant !== undefined)
-			this.hiHatVariant = params.hiHatVariant;
 		if (params.noteValue !== undefined) this.noteValue = params.noteValue;
 		this.regeneratePattern();
 	}
@@ -120,9 +116,7 @@ export class AudioEngine {
 				const isAccent = patternIndex === 0;
 				const buffer = isAccent
 					? this.buffers.accent
-					: this.hiHatVariant === 'closed'
-						? this.buffers.closed
-						: this.buffers.open;
+					: this.buffers.closed;
 
 				this.scheduleBuffer(buffer, this.nextNoteTime);
 			}

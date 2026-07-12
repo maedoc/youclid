@@ -46,8 +46,9 @@
 				>1/16</button>
 			</div>
 		</div>
-		<div class="tap-container">
+		<div class="tap-play-row">
 			<TapButton />
+			<PlayButton />
 		</div>
 		<PatternViz />
 		<div class="controls">
@@ -73,25 +74,7 @@
 				onChange={(v) => metronome.setRotation(v)}
 			/>
 		</div>
-		<div class="hihat-control">
-			<span class="label">Hi-Hat</span>
-			<div class="segmented" role="radiogroup" aria-label="Hi-hat variant">
-				<button
-					class:active={metronome.hiHatVariant === 'closed'}
-					onclick={() => metronome.setHiHatVariant('closed')}
-					role="radio"
-					aria-checked={metronome.hiHatVariant === 'closed'}
-				>Closed</button>
-				<button
-					class:active={metronome.hiHatVariant === 'open'}
-					onclick={() => metronome.setHiHatVariant('open')}
-					role="radio"
-					aria-checked={metronome.hiHatVariant === 'open'}
-				>Open</button>
-			</div>
-		</div>
 		<PresetPicker />
-		<PlayButton />
 	</div>
 </main>
 
@@ -117,30 +100,21 @@
 		border-radius: 16px;
 	}
 
-	.tap-container {
+	.tap-play-row {
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		padding: 0.5rem 0;
+		gap: 1.25rem;
+		padding: 0.25rem 0;
+	}
+
+	.tap-play-row > :global(.play-controls) {
+		flex: 1;
 	}
 
 	.controls {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
-	}
-
-	.hihat-control {
-		display: flex;
-		flex-direction: column;
-		gap: 0.4rem;
-	}
-
-	.hihat-control .label {
-		font-size: 0.8rem;
-		letter-spacing: 0.05em;
-		color: var(--muted);
-		text-transform: uppercase;
 	}
 
 	.note-value-control {
